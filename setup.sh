@@ -81,49 +81,69 @@ install_go_tool() {
     echo ""
 }
 
-install_go_tool "httpx" "github.com/projectdiscovery/httpx/cmd/httpx@latest" 1 6
-install_go_tool "alterx" "github.com/projectdiscovery/alterx/cmd/alterx@latest" 2 6
-install_go_tool "shuffledns" "github.com/projectdiscovery/shuffledns/cmd/shuffledns@latest" 3 6
-install_go_tool "subfinder" "github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest" 4 6
-install_go_tool "anew" "github.com/tomnomnom/anew@latest" 5 6
-install_go_tool "massdns" "github.com/blechschmidt/massdns/cmd/massdns@latest" 6 6
+install_go_tool "httpx" "github.com/projectdiscovery/httpx/cmd/httpx@latest" 1 5
+install_go_tool "alterx" "github.com/projectdiscovery/alterx/cmd/alterx@latest" 2 5
+install_go_tool "shuffledns" "github.com/projectdiscovery/shuffledns/cmd/shuffledns@latest" 3 5
+install_go_tool "subfinder" "github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest" 4 5
+install_go_tool "anew" "github.com/tomnomnom/anew@latest" 5 5
 
-# massdns might not be installable via go install - try system package manager
-if ! command -v massdns &> /dev/null; then
-    echo "[*] massdns not found via Go, trying system package manager..."
+# ============================================
+# Install massdns (C project - NOT a Go package)
+# ============================================
+echo ""
+echo "=============================================="
+echo "   Installing massdns"
+echo "=============================================="
+echo ""
 
+if [[ "$UPDATE_MODE" == true ]] || ! command -v massdns &> /dev/null; then
+    MASSDNS_INSTALLED=false
+
+    # Try apt-get first (Debian/Ubuntu/Kali)
     if command -v apt-get &> /dev/null; then
         echo "[*] Trying apt-get..."
         apt-get update -qq && apt-get install -y -qq massdns 2>/dev/null
         if [ $? -eq 0 ]; then
             echo -e "${GREEN}[✓]${NC} massdns installed via apt-get"
-        else
-            echo "[*] apt-get failed, building from source..."
-            # Build from source
-            git clone --depth 1 https://github.com/blechschmidt/massdns.git /tmp/massdns 2>/dev/null
-            if [ -d /tmp/massdns ]; then
-                cd /tmp/massdns && make 2>&1
-                if [ -f /tmp/massdns/bin/massdns ]; then
-                    cp /tmp/massdns/bin/massdns /usr/local/bin/massdns
-                    chmod +x /usr/local/bin/massdns
-                    echo -e "${GREEN}[✓]${NC} massdns built and installed from source"
-                else
-                    echo -e "${RED}[✗]${NC} massdns build failed"
-                fi
-                rm -rf /tmp/massdns
-                cd - > /dev/null
-            fi
+            MASSDNS_INSTALLED=true
         fi
-    elif command -v brew &> /dev/null; then
+    fi
+
+    # Try Homebrew (macOS)
+    if [[ "$MASSDNS_INSTALLED" == false ]] && command -v brew &> /dev/null; then
         echo "[*] Trying Homebrew..."
-        brew install massdns
+        brew install massdns 2>/dev/null
         if [ $? -eq 0 ]; then
             echo -e "${GREEN}[✓]${NC} massdns installed via Homebrew"
+            MASSDNS_INSTALLED=true
         fi
-    else
-        echo -e "${YELLOW}[!]${NC} Could not install massdns automatically"
-        echo "    Install manually: https://github.com/blechschmidt/massdns"
     fi
+
+    # Build from source as fallback
+    if [[ "$MASSDNS_INSTALLED" == false ]]; then
+        echo "[*] Building massdns from source..."
+        rm -rf /tmp/massdns
+        git clone --depth 1 https://github.com/blechschmidt/massdns.git /tmp/massdns 2>/dev/null
+        if [ -d /tmp/massdns ]; then
+            cd /tmp/massdns && make 2>&1
+            if [ -f /tmp/massdns/bin/massdns ]; then
+                cp /tmp/massdns/bin/massdns /usr/local/bin/massdns
+                chmod +x /usr/local/bin/massdns
+                echo -e "${GREEN}[✓]${NC} massdns built and installed from source"
+                MASSDNS_INSTALLED=true
+            else
+                echo -e "${RED}[✗]${NC} massdns build failed"
+                echo "    Install manually: https://github.com/blechschmidt/massdns"
+            fi
+            rm -rf /tmp/massdns
+            cd - > /dev/null
+        else
+            echo -e "${RED}[✗]${NC} Failed to clone massdns repo"
+            echo "    Install manually: https://github.com/blechschmidt/massdns"
+        fi
+    fi
+else
+    echo -e "${GREEN}[✓]${NC} massdns already installed (use --update to reinstall)"
 fi
 
 # ============================================
