@@ -20,7 +20,7 @@ def get_crtsh_subdomains(domain):
     Returns:
         List of unique subdomains or empty list on failure
     """
-    url = f"https://crt.sh/?dNSName=%25.{domain}&output=json"
+    url = f"https://crt.sh/?q=%25.{domain}&output=json"
 
     max_retries = 5
     retry_delay = 10
@@ -65,7 +65,7 @@ def get_crtsh_subdomains(domain):
 
         except requests.exceptions.HTTPError as e:
             logger.warning("crt.sh HTTP error: %s", e)
-            if attempt < max_retries - 1 and e.response.status_code in [500, 502, 503, 504]:
+            if attempt < max_retries - 1 and e.response.status_code in [404, 429, 500, 502, 503, 504]:
                 logger.info("Retrying in %d seconds...", retry_delay)
                 time.sleep(retry_delay)
                 retry_delay *= 2
