@@ -24,6 +24,7 @@ from subdomain_modules.virustotal_subs import get_virustotal_subdomains
 from subdomain_modules.securitytrails_subs import get_securitytrails_subdomains
 from subdomain_modules.crtsh_subs import get_crtsh_subdomains
 from subdomain_modules.chaos_subs import get_chaos_subdomains
+from subdomain_modules.urlscan_subs import get_urlscan_subdomains
 from subdomain_modules.otx_subs import get_otx_subdomains
 from subdomain_modules.subfinder_subs import get_subfinder_subdomains
 
@@ -40,15 +41,15 @@ from ip_modules.shodan_ips import get_shodan_ips
 # SOURCE MAPPING
 # ============================================================================
 
-# Map source names to their functions (urlscan removed)
 SOURCE_MAP = {
-    'virustotal': ('VirusTotal', lambda d: get_virustotal_subdomains(d)),
+    'virustotal':     ('VirusTotal',     lambda d: get_virustotal_subdomains(d)),
     'securitytrails': ('SecurityTrails', lambda d: get_securitytrails_subdomains(d)),
-    'crtsh': ('crt.sh', lambda d: get_crtsh_subdomains(d)),
-    'shodan': ('Shodan', lambda d: download_and_parse_shodan_data(d)),
-    'chaos': ('Chaos', lambda d: get_chaos_subdomains(d)),
-    'otx': ('AlienVault OTX', lambda d: get_otx_subdomains(d)),
-    'subfinder': ('Subfinder', lambda d: get_subfinder_subdomains(d)),
+    'crtsh':          ('crt.sh',         lambda d: get_crtsh_subdomains(d)),
+    'shodan':         ('Shodan',         lambda d: download_and_parse_shodan_data(d)),
+    'chaos':          ('Chaos',          lambda d: get_chaos_subdomains(d)),
+    'urlscan':        ('URLScan',        lambda d: get_urlscan_subdomains(d)),
+    'otx':            ('AlienVault OTX', lambda d: get_otx_subdomains(d)),
+    'subfinder':      ('Subfinder',      lambda d: get_subfinder_subdomains(d)),
 }
 
 

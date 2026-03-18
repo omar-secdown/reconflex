@@ -14,7 +14,7 @@ BANNER = """
     ║         Bug Bounty Recon Framework (PARALLEL)         ║
     ║                                                       ║
     ║  Sources: VirusTotal, SecurityTrails, crt.sh,         ║
-    ║           Shodan, Chaos, AlienVault OTX,              ║
+    ║           Shodan, Chaos, URLScan, AlienVault OTX,     ║
     ║           Subfinder (ProjectDiscovery)                ║
     ║                                                       ║
     ║  Acquisition: SecurityTrails + AlienVault OTX         ║
@@ -28,8 +28,7 @@ BANNER = """
     ╚═══════════════════════════════════════════════════════╝
     """
 
-# All available subdomain sources (urlscan removed)
-ALL_SOURCES = ['virustotal', 'securitytrails', 'crtsh', 'shodan', 'chaos', 'otx', 'subfinder']
+ALL_SOURCES = ['virustotal', 'securitytrails', 'crtsh', 'shodan', 'chaos', 'urlscan', 'otx', 'subfinder']
 
 
 def print_banner():
@@ -68,7 +67,7 @@ Examples:
 
 Available sources for --sources flag:
   virustotal (vt), securitytrails (st), crtsh, shodan,
-  chaos, otx, subfinder (sf)
+  chaos, urlscan, otx, subfinder (sf)
 
 Output Structure:
   output/

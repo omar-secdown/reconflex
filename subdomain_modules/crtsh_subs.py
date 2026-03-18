@@ -67,7 +67,7 @@ def get_crtsh_subdomains(domain):
     """
     url = f"https://crt.sh/?q=%25.{domain}&output=json"
 
-    max_retries = 2
+    max_retries = 3
     retry_delay = 5
 
     for attempt in range(max_retries):
