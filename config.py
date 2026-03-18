@@ -27,7 +27,6 @@ API_KEYS = {
     'SECURITYTRAILS_API_KEY': os.environ.get('SECURITYTRAILS_API_KEY', ''),
     'VIRUSTOTAL_API_KEY': os.environ.get('VIRUSTOTAL_API_KEY', ''),
     'CHAOS_API_KEY': os.environ.get('CHAOS_API_KEY', ''),
-    'URLSCAN_API_KEY': os.environ.get('URLSCAN_API_KEY', ''),
 }
 
 

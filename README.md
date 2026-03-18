@@ -75,7 +75,6 @@ OTX_API_KEY=your_key_here
 SECURITYTRAILS_API_KEY=your_key_here
 VIRUSTOTAL_API_KEY=your_key_here
 CHAOS_API_KEY=your_key_here
-URLSCAN_API_KEY=your_key_here
 ```
 
 **Where to get the keys:**
