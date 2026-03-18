@@ -200,7 +200,7 @@ def fetch_subdomains_parallel(domain, selected_sources=None, silent=False):
     results = {}
     all_subdomains = set()
 
-    with ThreadPoolExecutor(max_workers=min(7, len(tasks))) as executor:
+    with ThreadPoolExecutor(max_workers=min(8, len(tasks))) as executor:
         future_to_source = {executor.submit(task): source for source, task in tasks.items()}
         for future in as_completed(future_to_source):
             source = future_to_source[future]

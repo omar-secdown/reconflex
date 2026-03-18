@@ -72,7 +72,7 @@ def get_crtsh_subdomains(domain):
 
     for attempt in range(max_retries):
         try:
-            response = requests.get(url, timeout=60)
+            response = requests.get(url, timeout=30)
             response.raise_for_status()
 
             try:

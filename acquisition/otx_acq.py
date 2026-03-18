@@ -40,7 +40,6 @@ def get_otx_associated(domain, email_filters=None):
     email_filters = [f.lower().strip() for f in email_filters if f.strip()]
 
     if not email_filters:
-        print(f"    [!] No valid email filters provided")
         return []
 
     try:
